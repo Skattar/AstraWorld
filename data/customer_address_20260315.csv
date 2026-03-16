@@ -1,0 +1,5 @@
+id,customer_id,address,city,province,created_at
+1,1,"Jalan Mawar V, RT 1/RW 2",Bekasi,Jawa Barat,2026-03-01 14:24:40.012
+2,3,Jl Ababil Indah,TANGERANG SELATAN,JAWA BARAT,2026-03-01 14:24:40.012
+3,4,Jl. Kemang Raya 1 No 3,JAKARTA PUSAT,DKI JAKARTA,2026-03-01 14:24:40.012
+4,6,Astra Tower Jalan Yos Sudarso 12,Jakarta Utara,DKI Jakarta,2026-03-01 14:24:40.012
