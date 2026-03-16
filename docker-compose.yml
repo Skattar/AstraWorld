@@ -1,0 +1,69 @@
+version: "3.9"
+
+# ============================================================
+# AstraWorld Data Engineering - Docker Compose Setup
+#
+# This spins up:
+#   db        → MySQL 8.0 with the raw tables pre-seeded
+#   pipeline  → Python container that runs all 3 tasks in order
+#
+# How to run:
+#   docker-compose up --build
+#
+# To run just the DB and connect manually:
+#   docker-compose up db
+#   Then: mysql -h 127.0.0.1 -P 3306 -u root -pastraworld astraworld
+# ============================================================
+
+services:
+
+  # ── MySQL Database ──────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: astraworld_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: astraworld
+      MYSQL_DATABASE: astraworld
+    ports:
+      - "3306:3306"          # exposes MySQL so you can connect from DBeaver/TablePlus
+    volumes:
+      - mysql_data:/var/lib/mysql                    # persist data between restarts
+      - ./sql/01_setup_raw_tables.sql:/docker-entrypoint-initdb.d/01_setup.sql
+      # Any .sql file in initdb.d/ runs automatically on first container start
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pIamsuccessful"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Python Pipeline ─────────────────────────────────────────
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: astraworld_pipeline
+    depends_on:
+      db:
+        condition: service_healthy    # wait for MySQL to be ready before starting
+    environment:
+      DB_HOST: db                     # override host to use the docker service name
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: Iamsuccessful
+      DB_NAME: astraworld
+    volumes:
+      - ./data:/app/data              # mount local /data folder so CSVs are accessible
+    command: >
+      sh -c "
+        echo 'Running Task 1: CSV Ingestion...' &&
+        python scripts/task1_ingest_addresses.py --backfill &&
+        echo 'Running Task 2a: Data Cleaning...' &&
+        python scripts/task2a_clean.py &&
+        echo 'Running Task 2b: Datamart...' &&
+        python scripts/task2b_datamart.py &&
+        echo 'All tasks complete!'
+      "
+
+volumes:
+  mysql_data:

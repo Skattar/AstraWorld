@@ -1,0 +1,18 @@
+2026-03-16 02:28:05,769 [INFO] Backfill mode: found 1 file(s)
+2026-03-16 02:28:05,769 [INFO] Reading file: data/customer_address_20260315.csv
+2026-03-16 02:28:05,774 [INFO]   Rows read: 4
+2026-03-16 02:28:05,778 [INFO] Connecting to MySQL at localhost:3306...
+2026-03-16 02:28:05,843 [INFO] package: mysql.connector.plugins
+2026-03-16 02:28:05,844 [INFO] plugin_name: caching_sha2_password
+2026-03-16 02:28:05,844 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+2026-03-16 02:28:05,852 [ERROR] MySQL connection failed: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-03-16 02:30:20,172 [INFO] Backfill mode: found 1 file(s)
+2026-03-16 02:30:20,172 [INFO] Reading file: data/customer_address_20260315.csv
+2026-03-16 02:30:20,175 [INFO]   Rows read: 4
+2026-03-16 02:30:20,178 [INFO] Connecting to MySQL at localhost:3306...
+2026-03-16 02:30:20,227 [INFO] package: mysql.connector.plugins
+2026-03-16 02:30:20,227 [INFO] plugin_name: caching_sha2_password
+2026-03-16 02:30:20,227 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+2026-03-16 02:30:20,228 [INFO]   Connected successfully.
+2026-03-16 02:30:20,233 [INFO]   Rows read: 4 | Rows inserted: 4 | Skipped (duplicates): 0
+2026-03-16 02:30:20,233 [INFO] Done: customer_address_20260315.csv
